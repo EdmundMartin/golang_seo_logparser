@@ -46,6 +46,23 @@ func checkuseragent(logfile string) []string {
 	return googlebothits
 }
 
+func checkip(googlehits []string) []string {
+	validatedhits := []string{}
+
+	for _, f := range googlehits {
+		splitLine := strings.Split(f, " ")
+		ipAddress := splitLine[0]
+		for _, ip := range ips {
+			validated := strings.Contains(ipAddress, ip)
+			if validated {
+				validatedhits = append(validatedhits, f)
+				break
+			}
+		}
+	}
+	return validatedhits
+}
+
 func main() {
 	list := getLogs("*log")
 	fmt.Print(list)
@@ -53,6 +70,9 @@ func main() {
 	for _, f := range list {
 		res := checkuseragent(f)
 		fmt.Print(res)
-
+		res2 := checkip(res)
+		for _, f := range res2 {
+			fmt.Println(f)
+		}
 	}
 }
